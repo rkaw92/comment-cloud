@@ -1,7 +1,7 @@
 'use strict';
 
 // ### Technical requires ###
-const fastify = require('fastify');
+const express = require('express');
 const pino = require('pino');
 const nodemailer = require('nodemailer');
 const config = require('./config');
@@ -10,8 +10,10 @@ const MongoRepository = require('./base/MongoRepository');
 
 // ### Technical initialization ###
 const logger = pino({ name: config.APP_NAME });
-const app = fastify({ logger });
+const app = express();
 const mailTransport = nodemailer.createTransport(config.MAIL_AUTH_URL);
+const siteCORS = require('cors')();
+const router = express.Router();
 
 // ### Domain requires ###
 const CommentRepository = require('./classes/CommentRepository');
@@ -25,6 +27,7 @@ const commentValidator = new CommentValidator({ key: config.COMMENT_VALIDATION_T
 const mailOptions = { from: config.MAIL_FROM };
 const commentTokenMailer = new CommentTokenMailer({ commentValidator, mailTransport, mailOptions });
 const deps = {
+  siteCORS,
   commentRepository,
   commentValidator,
   commentTokenMailer
@@ -33,13 +36,25 @@ const deps = {
 // ### Routes ###
 const routeHandlers = require('./routes');
 routeHandlers.forEach(function(handler) {
-  handler(app, deps);
+  handler(router, deps);
 });
+
+// ### Middleware initialization ###
+function loggerMiddleware(req, res, next) {
+  logger.info({ event: 'request.end', method: req.method, url: req.url });
+  next();
+}
+app.use(require('body-parser').json());
+app.use(router);
+app.use(loggerMiddleware);
 
 // ### Listening ###
 // TODO: Split this up so that it's possible to run the whole API server
 //  embedded in another process.
-app.listen(config.HTTP_PORT).then(function _listenSuccessful() {
+(new Promise(function(fulfill, reject) {
+  app.listen(config.HTTP_PORT, fulfill);
+  app.once('error', reject);
+})).then(function _listenSuccessful() {
   logger.info({ event: 'Application.start' }, 'Application server listening');
 }, function _listenFailed(error) {
   logger.error({ event: 'Application.fail', error: error }, 'Application server failed to start: ' + (error.message || error));

@@ -4,7 +4,6 @@ const Entity = require('../base/Entity');
 
 class Comment extends Entity {
   constructor({ entityID, entityVersion, posted, author, message, date, subject, validated, validationDate }) {
-    console.log('comment: %j', arguments);
     super({ entityID, entityVersion });
     this.posted = Boolean(posted);
     this.author = author || null;

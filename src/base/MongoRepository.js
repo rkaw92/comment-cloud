@@ -4,7 +4,8 @@ const MongoClient = require('mongodb').MongoClient;
 const ConcurrencyException = require('./ConcurrencyException');
 
 class MongoRepository {
-  constructor({ db, URL, collectionName }) {
+  constructor({ db, URL, collectionName, options }) {
+    // TODO: Add custom index support!
     this._collectionName = collectionName;
     if (db) {
       this._dbPromise = Promise.resolve(db);
@@ -56,7 +57,6 @@ class MongoRepository {
   }
 
   static makeEntityData(entityID, rawEntry) {
-    console.log('makeEntityData: entityID = %s, rawEntry = %j', entityID, rawEntry);
     if (rawEntry) {
       return Object.assign(rawEntry, {
         entityID: entityID,
