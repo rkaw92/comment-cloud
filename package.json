@@ -1,0 +1,24 @@
+{
+  "name": "comment-cloud",
+  "version": "0.1.0",
+  "description": "a Web service for commenting on on-line content",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "comments",
+    "service",
+    "microservice",
+    "blog",
+    "articles",
+    "content"
+  ],
+  "author": "Robert Kawecki <robert+npm@rkaw.pl>",
+  "license": "MIT",
+  "dependencies": {
+    "fastify": "^2.0.0-rc.4",
+    "mongodb": "^3.1.10",
+    "nodemailer": "^5.1.1"
+  }
+}
