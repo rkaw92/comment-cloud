@@ -2,7 +2,6 @@
 
 const handler = require('../../utils/handler');
 const verifyOrigin = require('../../utils/verifyOrigin');
-const OriginError = require('../../classes/errors/OriginError');
 
 module.exports = function(router, deps) {
   // TODO: Add a JSON schema.
