@@ -12,6 +12,7 @@ module.exports = function(router, deps) {
     // TODO: URL validation and normalization for subject.
     comment.post(req.body.subject, req.body.author, req.body.message, new Date());
     await deps.commentRepository.persist(comment);
+    // TODO: Make this reliable, so that crashing the server doesn't result in unsent mails.
     setImmediate(function() {
       deps.commentTokenMailer.sendToken(comment);
     });
