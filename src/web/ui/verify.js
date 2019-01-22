@@ -9,6 +9,7 @@ function initApp(config) {
   const store = new Vuex.Store({
     state: {
       endpointURL: config.endpointURL,
+      subject: config.subject,
       commentID: config.commentID,
       token: config.token,
       configValid: (config.endpointURL && config.commentID && config.token),
@@ -30,7 +31,10 @@ function initApp(config) {
     actions: {
       startVerification: function(context) {
         context.commit('verificationStart');
-        return fetch(context.state.endpointURL + '/comments/' + context.state.commentID + '/validate', {
+        const endpointURL = context.state.endpointURL;
+        const encodedSubject = encodeURIComponent(context.state.subject);
+        const commentID = context.state.commentID;
+        return fetch(`${endpointURL}/subjects/${encodedSubject}/comments/${commentID}/verify`, {
           method: 'POST',
           mode: 'same-origin',
           headers: {
@@ -62,5 +66,6 @@ const params = new URLSearchParams(window.location.search);
 initApp({
   endpointURL: window.location.origin,
   commentID: params.get('commentID'),
+  subject: params.get('subject'),
   token: params.get('token')
 });

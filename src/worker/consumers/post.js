@@ -11,11 +11,11 @@ module.exports = function post(deps, channel) {
     try {
       const task = JSON.parse(message.content.toString('utf-8'));
       // Get a (presumably) new comment:
-      const comment = await deps.commentRepository.load(task.entityID);
+      const comment = await deps.commentRepository.load(task.entityID, task.subject);
       // TODO: Skip sending e-mail if the comment already exists:
       comment.post(task.subject, task.author, task.message, new Date());
       await deps.commentRepository.persist(comment);
-      const token = deps.commentValidator.getToken(comment);
+      const token = deps.tokenValidator.getToken(comment);
       const mailTaskJSON = JSON.stringify({ comment, token });
       const mailTaskBuffer = Buffer.from(mailTaskJSON, 'utf-8');
       deps.busChannel.publish('tasks.mailVerificationLink', '', mailTaskBuffer);

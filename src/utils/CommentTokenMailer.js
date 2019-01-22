@@ -9,7 +9,7 @@ class CommentTokenMailer {
 
   _getMailOptions(comment, token) {
     const subjectURL = new URL(comment.subject);
-    const validationURL = new URL(`ui/verify.html?commentID=${encodeURIComponent(comment.entityID)}&token=${encodeURIComponent(token)}`, this._externalURL);
+    const validationURL = new URL(`ui/verify.html?commentID=${encodeURIComponent(comment.entityID)}&subject=${encodeURIComponent(comment.subject)}&token=${encodeURIComponent(token)}`, this._externalURL);
     const quotedComment = comment.message.split('\n').map((line) => `> ${line}`).join('\n');
     const website = subjectURL.hostname;
     return Object.assign({}, this._mailOptions, {

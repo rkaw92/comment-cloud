@@ -6,5 +6,5 @@ module.exports = [
   require('./comments/get'),
   require('./comments/options'),
   require('./comments/post'),
-  require('./comments/validate')
+  require('./comments/verify')
 ];

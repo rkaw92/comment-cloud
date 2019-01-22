@@ -14,15 +14,15 @@ const busConnector = new AMQPBase.AMQPConnector(config.AMQP_URL);
 
 // ### Domain requires ###
 const CommentRepository = require('../classes/CommentRepository');
-const CommentValidator = require('../utils/CommentValidator');
+const TokenValidator = require('../utils/TokenValidator');
 const CommentTokenMailer = require('../utils/CommentTokenMailer');
 
 // ### Domain initialization ###
 const commentRepository = new CommentRepository(new MongoRepository({ URL: config.MONGODB_URL, collectionName: 'Comment' }));
-const commentValidator = new CommentValidator({ key: config.COMMENT_VALIDATION_TOKEN });
+const tokenValidator = new TokenValidator({ key: config.COMMENT_VALIDATION_TOKEN });
 const mailOptions = { from: config.MAIL_FROM };
 const externalURL = config.EXTERNAL_URL;
-const commentTokenMailer = new CommentTokenMailer({ commentValidator, mailTransport, mailOptions, externalURL });
+const commentTokenMailer = new CommentTokenMailer({ mailTransport, mailOptions, externalURL });
 
 // ### Worker requires ###
 const consumers = require('../worker/consumers');
@@ -32,7 +32,7 @@ const deps = {
   config,
   logger,
   commentRepository,
-  commentValidator,
+  tokenValidator,
   commentTokenMailer,
   busChannel: null
 };

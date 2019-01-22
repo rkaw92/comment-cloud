@@ -18,9 +18,10 @@ class MongoRepository {
     }
   }
 
-  async load(entityClass, entityID) {
+  async load(entityClass, entityID, query) {
     const db = await this._dbPromise;
-    const rawEntry = await db.collection(this._collectionName).findOne({ _id: entityID });
+    const effectiveQuery = Object.assign({ _id: entityID }, query);
+    const rawEntry = await db.collection(this._collectionName).findOne(effectiveQuery);
     const entityData = MongoRepository.makeEntityData(entityID, rawEntry);
     return entityClass.fromRepositoryEntry(entityData);
   }

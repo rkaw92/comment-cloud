@@ -7,8 +7,11 @@ class CommentRepository {
     this._mongoRepository = mongoRepository;
   }
 
-  async load(commentID) {
-    return this._mongoRepository.load(Comment, commentID);
+  async load(commentID, subject) {
+    if (!subject) {
+      throw new Error('CommentRepository#load: subject is required besides commentID');
+    }
+    return await this._mongoRepository.load(Comment, commentID, { subject: String(subject) });
   }
 
   async persist(comment) {

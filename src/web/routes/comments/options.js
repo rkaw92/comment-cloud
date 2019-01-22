@@ -1,8 +1,10 @@
 'use strict';
 
 module.exports = function(router, deps) {
-  // TODO: Add a JSON schema.
-  router.options('/comments/', deps.siteCORS, function(req, res) {
+  router.options('/subjects/:subject', deps.siteCORS, function(req, res) {
+    res.end();
+  });
+  router.options('/subjects/:subject/comments', deps.siteCORS, function(req, res) {
     res.end();
   });
 };

@@ -2,13 +2,13 @@
 
 const crypto = require('crypto');
 
-class CommentValidator {
+class TokenValidator {
   constructor({ key, algorithm = 'sha256' }) {
     if (!key) {
-      throw new Error('No key passed to CommentValidator');
+      throw new Error('No key passed to TokenValidator');
     }
     if (typeof key !== 'string' || key.length < 16) {
-      throw new Error('Invalid key passed to CommentValidator (need a string of at least 16 chars)');
+      throw new Error('Invalid key passed to TokenValidator (need a string of at least 16 chars)');
     }
     this._key = key;
     this._algorithm = algorithm;
@@ -23,12 +23,12 @@ class CommentValidator {
   checkToken(comment, token) {
     const expectedValue = this.getToken(comment);
     if (expectedValue !== token) {
-      throw new CommentValidator.CommentValidationFailedError();
+      throw new TokenValidator.CommentValidationFailedError();
     }
   }
 }
 
-CommentValidator.CommentValidationFailedError = class CommentValidationFailedError extends Error {
+TokenValidator.CommentValidationFailedError = class CommentValidationFailedError extends Error {
   constructor() {
     super('Comment validation failed due to invalid token');
     this.name = 'CommentValidationFailedError';
@@ -36,4 +36,4 @@ CommentValidator.CommentValidationFailedError = class CommentValidationFailedErr
   }
 };
 
-module.exports = CommentValidator;
+module.exports = TokenValidator;

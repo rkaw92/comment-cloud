@@ -21,21 +21,20 @@ busConnector.start();
 
 // ### Domain requires ###
 const CommentRepository = require('../classes/CommentRepository');
-// TODO: Move CommentValidator to classes as well?
-const CommentValidator = require('../utils/CommentValidator');
+const TokenValidator = require('../utils/TokenValidator');
 const CommentTokenMailer = require('../utils/CommentTokenMailer');
 
 // ### Domain dependencies ###
 const commentRepository = new CommentRepository(new MongoRepository({ URL: config.MONGODB_URL, collectionName: 'Comment' }));
-const commentValidator = new CommentValidator({ key: config.COMMENT_VALIDATION_TOKEN });
+const tokenValidator = new TokenValidator({ key: config.COMMENT_VALIDATION_TOKEN });
 const mailOptions = { from: config.MAIL_FROM };
 const externalURL = config.EXTERNAL_URL;
-const commentTokenMailer = new CommentTokenMailer({ commentValidator, mailTransport, mailOptions, externalURL });
+const commentTokenMailer = new CommentTokenMailer({ mailTransport, mailOptions, externalURL });
 const deps = {
   config,
   siteCORS,
   commentRepository,
-  commentValidator,
+  tokenValidator,
   commentTokenMailer,
   // TODO: Encapsulate the channel in something with a better API for sending, flow control and channel health reporting.
   busChannel: null
