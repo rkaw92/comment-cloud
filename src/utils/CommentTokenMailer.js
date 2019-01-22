@@ -9,14 +9,14 @@ class CommentTokenMailer {
 
   _getMailOptions(comment, token) {
     const subjectURL = new URL(comment.subject);
-    const validationURL = '<TODO>';
+    const validationURL = `(no URL yet, your token is ${token})`;
     const quotedComment = comment.message.split('\n').map((line) => `> ${line}`).join('\n');
     const website = subjectURL.hostname;
     return Object.assign({}, this._mailOptions, {
-      to: comment.author,
+      to: comment.author.email,
       subject: `Confirm your comment on ${website}`,
       text: `
-Hi!
+Hi ${comment.author.name}!
 Thank you for your comment on ${comment.subject}
 To verify your comment for publishing, please visit the below link:
 ${validationURL}

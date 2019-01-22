@@ -2,6 +2,7 @@
 
 // ### Technical requires ###
 const express = require('express');
+const path = require('path');
 const pino = require('pino');
 const nodemailer = require('nodemailer');
 const config = require('./config');
@@ -46,6 +47,7 @@ function loggerMiddleware(req, res, next) {
 }
 app.use(require('body-parser').json());
 app.use(router);
+app.use('/ui', express.static(path.join(__dirname, '../assets/')));
 app.use(loggerMiddleware);
 
 // ### Listening ###
