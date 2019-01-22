@@ -7,7 +7,7 @@ function verifyOrigin(subjectString, originString) {
     if (!subjectString) {
       throw new Error('subject URL not provided');
     }
-    if (!originString) {
+    if (!originString || originString === 'null') {
       throw new Error('Origin header not present');
     }
     const subjectURL = new URL(subjectString);
