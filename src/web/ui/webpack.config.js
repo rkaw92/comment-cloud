@@ -12,7 +12,7 @@ module.exports = {
   mode: 'development',
   devtool: 'source-map',
   output: {
-    path: path.resolve(__dirname, '../../assets'),
+    path: path.resolve(__dirname, '../../../assets'),
     filename: '[name].bundle.js',
     libraryTarget: 'var'
     // We export nothing and do no assignments to globals.

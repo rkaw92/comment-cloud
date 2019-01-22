@@ -1,7 +1,7 @@
 'use strict';
 
-const handler = require('../../utils/handler');
-const verifyOrigin = require('../../utils/verifyOrigin');
+const handler = require('../../../utils/handler');
+const verifyOrigin = require('../../../utils/verifyOrigin');
 
 module.exports = function(router, deps) {
   // TODO: Add a JSON schema.

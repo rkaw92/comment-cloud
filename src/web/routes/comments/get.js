@@ -1,6 +1,6 @@
 'use strict';
 
-const handler = require('../../utils/handler');
+const handler = require('../../../utils/handler');
 
 module.exports = function(router, deps) {
   // TODO: Add a JSON schema.

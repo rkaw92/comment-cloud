@@ -5,9 +5,9 @@ const express = require('express');
 const path = require('path');
 const pino = require('pino');
 const nodemailer = require('nodemailer');
-const config = require('./config');
-const exit = require('./exit');
-const MongoRepository = require('./base/MongoRepository');
+const config = require('../config');
+const exit = require('../utils/exit');
+const MongoRepository = require('../base/MongoRepository');
 
 // ### Technical initialization ###
 const logger = pino({ name: config.APP_NAME });
@@ -17,10 +17,10 @@ const siteCORS = require('cors')();
 const router = express.Router();
 
 // ### Domain requires ###
-const CommentRepository = require('./classes/CommentRepository');
+const CommentRepository = require('../classes/CommentRepository');
 // TODO: Move CommentValidator to classes as well?
-const CommentValidator = require('./utils/CommentValidator');
-const CommentTokenMailer = require('./utils/CommentTokenMailer');
+const CommentValidator = require('../utils/CommentValidator');
+const CommentTokenMailer = require('../utils/CommentTokenMailer');
 
 // ### Domain dependencies ###
 const commentRepository = new CommentRepository(new MongoRepository({ URL: config.MONGODB_URL, collectionName: 'Comment' }));
@@ -36,7 +36,7 @@ const deps = {
 };
 
 // ### Routes ###
-const routeHandlers = require('./routes');
+const routeHandlers = require('../web/routes');
 routeHandlers.forEach(function(handler) {
   handler(router, deps);
 });
@@ -48,7 +48,7 @@ function loggerMiddleware(req, res, next) {
 }
 app.use(require('body-parser').json());
 app.use(router);
-app.use('/ui', express.static(path.join(__dirname, '../assets/')));
+app.use('/ui', express.static(path.join(__dirname, '../../assets/')));
 app.use(loggerMiddleware);
 
 // ### Listening ###
