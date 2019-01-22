@@ -1,15 +1,16 @@
 'use strict';
 
 class CommentTokenMailer {
-  constructor({ commentValidator, mailTransport, mailOptions }) {
+  constructor({ commentValidator, mailTransport, mailOptions, externalURL }) {
     this._commentValidator = commentValidator;
     this._mailTransport = mailTransport;
     this._mailOptions = mailOptions;
+    this._externalURL = externalURL;
   }
 
   _getMailOptions(comment, token) {
     const subjectURL = new URL(comment.subject);
-    const validationURL = `(no URL yet, your token is ${token})`;
+    const validationURL = new URL(`ui/verify.html?commentID=${encodeURIComponent(comment.getEntityID())}&token=${encodeURIComponent(token)}`, this._externalURL);
     const quotedComment = comment.message.split('\n').map((line) => `> ${line}`).join('\n');
     const website = subjectURL.hostname;
     return Object.assign({}, this._mailOptions, {

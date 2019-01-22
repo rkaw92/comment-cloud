@@ -26,7 +26,8 @@ const CommentTokenMailer = require('./utils/CommentTokenMailer');
 const commentRepository = new CommentRepository(new MongoRepository({ URL: config.MONGODB_URL, collectionName: 'Comment' }));
 const commentValidator = new CommentValidator({ key: config.COMMENT_VALIDATION_TOKEN });
 const mailOptions = { from: config.MAIL_FROM };
-const commentTokenMailer = new CommentTokenMailer({ commentValidator, mailTransport, mailOptions });
+const externalURL = config.EXTERNAL_URL;
+const commentTokenMailer = new CommentTokenMailer({ commentValidator, mailTransport, mailOptions, externalURL });
 const deps = {
   siteCORS,
   commentRepository,

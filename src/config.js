@@ -6,6 +6,7 @@ function fail(error) {
 
 module.exports = {
   HTTP_PORT: process.env.HTTP_PORT || 3000,
+  EXTERNAL_URL: process.env.EXTERNAL_URL || fail(new Error('Missing env variable EXTERNAL_URL - example: https://comments.example.com/')),
   APP_NAME: process.env.APP_NAME || 'comment-cloud',
   MONGODB_URL: process.env.MONGODB_URL || 'mongodb://localhost/comment_cloud',
   COMMENT_VALIDATION_TOKEN: process.env.COMMENT_VALIDATION_TOKEN || fail(new Error('Missing env variable COMMENT_VALIDATION_TOKEN')),
