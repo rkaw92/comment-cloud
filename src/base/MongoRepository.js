@@ -2,6 +2,21 @@
 
 const MongoClient = require('mongodb').MongoClient;
 const ConcurrencyException = require('./ConcurrencyException');
+const when = require('when');
+
+function makeConnectedClient(URL) {
+  function _tryConnecting() {
+    const client = new MongoClient(URL, { useNewUrlParser: true });
+    return client.connect().then(function _connectionOK() {
+      // NOTE: No database name passed - uses the name from the URL:
+      return client.db();
+    }, function _connectionFailed(error) {
+      // TODO: Log the connection failure. Note that this is normal when starting a docker-compose.
+      return when.resolve().delay(3000).then(_tryConnecting);
+    });
+  }
+  return _tryConnecting();
+}
 
 class MongoRepository {
   constructor({ db, URL, collectionName, options }) {
@@ -10,11 +25,7 @@ class MongoRepository {
     if (db) {
       this._dbPromise = Promise.resolve(db);
     } else {
-      const client = new MongoClient(URL, { useNewUrlParser: true });
-      this._dbPromise = client.connect().then(function() {
-        // NOTE: No database name passed - uses the name from the URL:
-        return client.db();
-      });
+      this._dbPromise = makeConnectedClient(URL);
     }
   }
 
