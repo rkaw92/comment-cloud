@@ -1,0 +1,54 @@
+version: '3.2'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: dockerfiles/web/Dockerfile
+    image: rkaw92/comment-cloud-web:latest
+    ports:
+      - 3000
+    environment:
+      - EXTERNAL_URL
+      - 'AMQP_URL=amqp://rabbitmq/%2f'
+      - TESTING
+      - 'MONGODB_URL=mongodb://mongodb/comment_cloud'
+      - COMMENT_VALIDATION_TOKEN
+      - MAIL_AUTH_URL
+      - MAIL_FROM
+  worker:
+    build:
+      context: .
+      dockerfile: dockerfiles/worker/Dockerfile
+    image: rkaw92/comment-cloud-worker:latest
+    environment:
+      - EXTERNAL_URL
+      - 'AMQP_URL=amqp://rabbitmq/%2f'
+      - TESTING
+      - 'MONGODB_URL=mongodb://mongodb/comment_cloud'
+      - COMMENT_VALIDATION_TOKEN
+      - MAIL_AUTH_URL
+      - MAIL_FROM
+  mongodb:
+    image: mongo:3.4-jessie
+    hostname: comment-cloud-mongodb
+    volumes:
+      - type: volume
+        source: comment-cloud-mongodb-data
+        target: /data/db
+        volume:
+          nocopy: true
+  rabbitmq:
+    # TODO: Add a configuration env variable that disables management.
+    image: rabbitmq:3-management
+    ports:
+      - 15672
+    hostname: comment-cloud-rabbitmq
+    volumes:
+      - type: volume
+        source: comment-cloud-rabbitmq-data
+        target: /var/lib/rabbitmq
+
+volumes:
+  comment-cloud-mongodb-data:
+  comment-cloud-rabbitmq-data:
