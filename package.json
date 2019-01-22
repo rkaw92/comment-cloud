@@ -4,7 +4,8 @@
   "description": "a Web service for commenting on on-line content",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build-ui": "webpack --config src/web/ui/webpack.config.js"
   },
   "keywords": [
     "comments",

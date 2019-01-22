@@ -7,7 +7,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: {
-    verify: './verify.js'
+    verify: path.resolve(__dirname, './verify.js')
   },
   mode: 'development',
   devtool: 'source-map',
