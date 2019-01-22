@@ -17,6 +17,7 @@
   "author": "Robert Kawecki <robert+npm@rkaw.pl>",
   "license": "MIT",
   "dependencies": {
+    "amqp-base": "^0.3.1",
     "body-parser": "^1.18.3",
     "cors": "^2.8.5",
     "dev": "^0.1.3",

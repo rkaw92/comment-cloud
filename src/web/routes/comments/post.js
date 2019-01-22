@@ -4,18 +4,20 @@ const handler = require('../../../utils/handler');
 const verifyOrigin = require('../../../utils/verifyOrigin');
 
 module.exports = function(router, deps) {
-  // TODO: Add a JSON schema.
   router.post('/comments/', deps.siteCORS, handler(async function(req, res) {
     // Make sure that the target domain is the same as the request origin:
-    verifyOrigin(req.body.subject, req.headers.origin);
-    const comment = await deps.commentRepository.load(req.body.entityID);
-    // TODO: URL validation and normalization for subject.
-    comment.post(req.body.subject, req.body.author, req.body.message, new Date());
-    await deps.commentRepository.persist(comment);
-    // TODO: Make this reliable, so that crashing the server doesn't result in unsent mails.
-    setImmediate(function() {
-      deps.commentTokenMailer.sendToken(comment);
+    if (!deps.config.TESTING) {
+      verifyOrigin(req.body.subject, req.headers.origin);
+    }
+    // Send the task to the
+    const taskJSON = JSON.stringify({
+      entityID: req.body.entityID,
+      subject: req.body.subject,
+      origin: req.body.origin,
+      author: req.body.author,
+      message: req.body.message
     });
-    return comment;
+    const taskBuffer = Buffer.from(taskJSON, 'utf-8');
+    deps.busChannel.publish('tasks.post', '', taskBuffer);
   }));
 };

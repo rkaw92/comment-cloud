@@ -8,13 +8,16 @@ const nodemailer = require('nodemailer');
 const config = require('../config');
 const exit = require('../utils/exit');
 const MongoRepository = require('../base/MongoRepository');
+const AMQPBase = require('amqp-base');
 
 // ### Technical initialization ###
-const logger = pino({ name: config.APP_NAME });
+const logger = pino({ name: config.APP_NAME, base: { component: 'web' }, serializers: { error: pino.stdSerializers.err } });
 const app = express();
 const mailTransport = nodemailer.createTransport(config.MAIL_AUTH_URL);
 const siteCORS = require('cors')();
 const router = express.Router();
+const busConnector = new AMQPBase.AMQPConnector(config.AMQP_URL);
+busConnector.start();
 
 // ### Domain requires ###
 const CommentRepository = require('../classes/CommentRepository');
@@ -29,11 +32,26 @@ const mailOptions = { from: config.MAIL_FROM };
 const externalURL = config.EXTERNAL_URL;
 const commentTokenMailer = new CommentTokenMailer({ commentValidator, mailTransport, mailOptions, externalURL });
 const deps = {
+  config,
   siteCORS,
   commentRepository,
   commentValidator,
-  commentTokenMailer
+  commentTokenMailer,
+  // TODO: Encapsulate the channel in something with a better API for sending, flow control and channel health reporting.
+  busChannel: null
 };
+// Initialize the AMQP connector and try to keep a channel up:
+busConnector.on('connect', function(connection) {
+  // TODO: Consider using publisher confirms.
+  const channelManager = new AMQPBase.AMQPChannelManager(connection, { confirm: false });
+  channelManager.on('create', function(channel) {
+    deps.busChannel = channel;
+  });
+  channelManager.on('close', function() {
+    deps.busChannel = null;
+  });
+  channelManager.start();
+});
 
 // ### Routes ###
 const routeHandlers = require('../web/routes');
