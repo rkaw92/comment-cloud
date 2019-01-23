@@ -15,7 +15,7 @@ module.exports = function post(deps, channel) {
       // TODO: Skip sending e-mail if the comment already exists:
       comment.post(task.subject, task.author, task.message, new Date());
       await deps.commentRepository.persist(comment);
-      const token = deps.tokenValidator.getToken(comment);
+      const token = deps.tokenValidator.getToken({ entityID: comment.getEntityID() });
       const mailTaskJSON = JSON.stringify({ comment, token });
       const mailTaskBuffer = Buffer.from(mailTaskJSON, 'utf-8');
       deps.busChannel.publish('tasks.mailVerificationLink', '', mailTaskBuffer);

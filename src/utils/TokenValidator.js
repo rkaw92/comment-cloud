@@ -13,15 +13,14 @@ class TokenValidator {
     this._key = key;
     this._algorithm = algorithm;
   }
-  getToken(comment) {
-    const entityID = comment.getEntityID();
+  getToken({ entityID }) {
     const mac = crypto.createHmac(this._algorithm, this._key);
     mac.update(entityID);
     const resultHash = mac.digest('hex');
     return resultHash;
   }
-  checkToken(comment, token) {
-    const expectedValue = this.getToken(comment);
+  checkToken({ entityID }, token) {
+    const expectedValue = this.getToken({ entityID });
     if (expectedValue !== token) {
       throw new TokenValidator.CommentValidationFailedError();
     }

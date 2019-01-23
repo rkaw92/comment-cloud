@@ -3,5 +3,6 @@
 module.exports = {
   test: require('./test'),
   post: require('./post'),
-  mailVerificationLink: require('./mailVerificationLink')
+  mailVerificationLink: require('./mailVerificationLink'),
+  validate: require('./validate')
 };
