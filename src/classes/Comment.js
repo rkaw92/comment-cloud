@@ -43,6 +43,16 @@ class Comment extends Entity {
     this.validated = true;
     this.validationDate = new Date(date);
   }
+
+  getPublicData() {
+    return {
+      entityID: this.getEntityID(),
+      subject: this.subject,
+      author: { name: this.author.name },
+      message: this.message,
+      date: this.date
+    };
+  }
 }
 
 module.exports = Comment;
