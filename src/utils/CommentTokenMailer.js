@@ -23,7 +23,7 @@ ${validationURL}
 
 For reference, the complete content of the comment follows:
 
-Posted on ${(new Date(comment.date)).toISOString()} as ${comment.author}
+Posted on ${(new Date(comment.date)).toISOString()} as ${comment.author.name}
 ${quotedComment}
 
 ---
