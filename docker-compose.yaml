@@ -39,10 +39,9 @@ services:
         volume:
           nocopy: true
   rabbitmq:
-    # TODO: Add a configuration env variable that disables management.
     image: rabbitmq:3-management
-    ports:
-      - 15672
+    # NOTE: Ports are not exposed. The management runs on TCP port 15672.
+    # To expose the management port, see https://docs.docker.com/compose/extends/#example-use-case
     hostname: comment-cloud-rabbitmq
     volumes:
       - type: volume
