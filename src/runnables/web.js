@@ -9,12 +9,30 @@ const config = require('../config');
 const exit = require('../utils/exit');
 const MongoRepository = require('../base/MongoRepository');
 const AMQPBase = require('amqp-base');
+const RateLimiterMemory = require('rate-limiter-flexible').RateLimiterMemory;
 
 // ### Technical initialization ###
 const logger = pino({ name: config.APP_NAME, base: { component: 'web' }, serializers: { error: pino.stdSerializers.err } });
 const app = express();
 const mailTransport = nodemailer.createTransport(config.MAIL_AUTH_URL);
 const siteCORS = require('cors')();
+const rateLimiter = new RateLimiterMemory({
+  points: config.RATE_LIMIT_POINTS,
+  duration: config.RATE_LIMIT_DURATION
+});
+const rateLimitMiddleware = function rateLimiterMiddleware(req, res, next) {
+  // Notice how we're limiting the source IP sooner than the e-mail address -
+  //  this way, it's harder to maliciously block an e-mail from the service
+  //  using just 1 attacker IP.
+  Promise.all([
+    rateLimiter.consume(req.ip, 2),
+    req.body.email ? rateLimiter.consume(req.body.email, 1) : true
+  ]).then(function() {
+    next();
+  }).catch(function() {
+    res.status(429).send('Rate limit reached, please try again later');
+  });
+};
 const router = express.Router();
 const busConnector = new AMQPBase.AMQPConnector(config.AMQP_URL);
 busConnector.start();
@@ -33,6 +51,7 @@ const commentTokenMailer = new CommentTokenMailer({ mailTransport, mailOptions, 
 const deps = {
   config,
   siteCORS,
+  rateLimitMiddleware,
   commentRepository,
   tokenValidator,
   commentTokenMailer,

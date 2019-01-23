@@ -4,13 +4,13 @@ const handler = require('../../../utils/handler');
 const verifyOrigin = require('../../../utils/verifyOrigin');
 
 module.exports = function(router, deps) {
-  router.post('/subjects/:subject/comments', deps.siteCORS, handler(async function(req, res) {
+  router.post('/subjects/:subject/comments', deps.siteCORS, deps.rateLimitMiddleware, handler(async function(req, res) {
     const subject = req.params.subject;
     // Make sure that the target domain is the same as the request origin:
     if (!deps.config.TESTING) {
       verifyOrigin(subject, req.headers.origin);
     }
-    // Send the task to the
+    // Send the task to the worker that will actually persist it.
     const taskJSON = JSON.stringify({
       entityID: req.body.entityID,
       subject: subject,

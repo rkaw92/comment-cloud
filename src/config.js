@@ -13,5 +13,7 @@ module.exports = {
   MONGODB_URL: process.env.MONGODB_URL || 'mongodb://localhost/comment_cloud',
   COMMENT_VALIDATION_TOKEN: process.env.COMMENT_VALIDATION_TOKEN || fail(new Error('Missing env variable COMMENT_VALIDATION_TOKEN')),
   MAIL_AUTH_URL: process.env.MAIL_AUTH_URL || fail(new Error('Missing env variable MAIL_AUTH_URL')),
-  MAIL_FROM: process.env.MAIL_FROM || fail(new Error('Missing env variable MAIL_FROM'))
+  MAIL_FROM: process.env.MAIL_FROM || fail(new Error('Missing env variable MAIL_FROM')),
+  RATE_LIMIT_POINTS: process.env.RATE_LIMIT_POINTS || 5,
+  RATE_LIMIT_DURATION: process.env.RATE_LIMIT_DURATION || 300
 };
