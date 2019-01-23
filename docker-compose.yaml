@@ -7,7 +7,7 @@ services:
       dockerfile: dockerfiles/web/Dockerfile
     image: rkaw92/comment-cloud-web:latest
     ports:
-      - 3000
+      - 6430:3000
     environment:
       - EXTERNAL_URL
       - 'AMQP_URL=amqp://rabbitmq/%2f'
