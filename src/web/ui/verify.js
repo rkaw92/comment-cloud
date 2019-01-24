@@ -46,8 +46,18 @@ function initApp(config) {
             throw new Error('Call failed - status code ' + response.status);
           }
           context.commit('verificationEnd', { success: true });
+          context.dispatch('redirectToComment');
         }).catch(function(error) {
           context.commit('verificationEnd', { success: false, error: error });
+        });
+      },
+      redirectToComment: function(context) {
+        return new Promise(function(resolve) {
+          setTimeout(function() {
+            // Go to the subject of this comment:
+            window.location.href = context.state.subject;
+            resolve();
+          }, 1000);
         });
       }
     }
