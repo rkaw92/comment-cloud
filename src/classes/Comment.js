@@ -5,13 +5,14 @@ const Author = require('./Author');
 const check = require('../utils/check');
 
 class Comment extends Entity {
-  constructor({ entityID, entityVersion, posted, author, message, date, subject, validated, validationDate }) {
+  constructor({ entityID, entityVersion, posted, author, message, date, subject, origin, validated, validationDate }) {
     super({ entityID, entityVersion });
     this.posted = Boolean(posted);
     this.author = author ? new Author(author) : null;
     this.message = message || null;
     this.date = new Date(date);
     this.subject = subject || null;
+    this.origin = origin || null;
     this.validated = Boolean(validated);
     this.validationDate = new Date(validationDate);
   }
@@ -22,6 +23,7 @@ class Comment extends Entity {
       return;
     }
     this.subject = subject;
+    this.origin = (new URL(subject)).origin;
     this.author = new Author(author);
     if (!this.author.isVerifiable()) {
       throw new Error('Author not verifiable - at least an e-mail address must be provided');
@@ -50,6 +52,7 @@ class Comment extends Entity {
     return {
       entityID: this.getEntityID(),
       subject: this.subject,
+      origin: this.origin,
       author: { name: this.author.name },
       message: this.message,
       date: this.date
