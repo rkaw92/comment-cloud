@@ -2,6 +2,7 @@
 
 const Entity = require('../base/Entity');
 const Author = require('./Author');
+const check = require('../utils/check');
 
 class Comment extends Entity {
   constructor({ entityID, entityVersion, posted, author, message, date, subject, validated, validationDate }) {
@@ -16,6 +17,7 @@ class Comment extends Entity {
   }
 
   post(subject, author, message, date) {
+    Comment.checkPost({ subject, author, message, date });
     if (this.posted) {
       return;
     }
@@ -52,6 +54,13 @@ class Comment extends Entity {
       message: this.message,
       date: this.date
     };
+  }
+
+  static checkPost({ subject, author, message, date }) {
+    check('subject', subject, (text) => typeof text === 'string' && text && text.length <= 256);
+    check('author', author, (data) => typeof data === 'object' && data && data.name && typeof data.name === 'string' && data.name <= 64 && typeof data.email === 'string' && data.email && data.email.length <= 256);
+    check('message', message, (text) => typeof text === 'string' && text.length <= 2000);
+    check('date', date, (date) => !isNaN(new Date(date).getTime()));
   }
 }
 

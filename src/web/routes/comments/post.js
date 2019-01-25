@@ -2,6 +2,7 @@
 
 const handler = require('../../../utils/handler');
 const verifyOrigin = require('../../../utils/verifyOrigin');
+const Comment = require('../../../classes/Comment');
 
 module.exports = function(router, deps) {
   router.post('/subjects/:subject/comments', deps.siteCORS, deps.rateLimitMiddleware, handler(async function(req, res) {
@@ -10,6 +11,12 @@ module.exports = function(router, deps) {
     if (!deps.config.TESTING) {
       verifyOrigin(subject, req.headers.origin);
     }
+    Comment.checkPost({
+      date: new Date(),
+      subject: subject,
+      author: req.body.author,
+      message: req.body.message
+    });
     // Send the task to the worker that will actually persist it.
     const taskJSON = JSON.stringify({
       entityID: req.body.entityID,
