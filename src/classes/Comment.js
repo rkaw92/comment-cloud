@@ -58,7 +58,7 @@ class Comment extends Entity {
 
   static checkPost({ subject, author, message, date }) {
     check('subject', subject, (text) => typeof text === 'string' && text && text.length <= 256);
-    check('author', author, (data) => typeof data === 'object' && data && data.name && typeof data.name === 'string' && data.name <= 64 && typeof data.email === 'string' && data.email && data.email.length <= 256);
+    check('author', author, (data) => typeof data === 'object' && data && data.name && typeof data.name === 'string' && data.name.length <= 64 && typeof data.email === 'string' && data.email && data.email.length <= 256);
     check('message', message, (text) => typeof text === 'string' && text.length <= 2000);
     check('date', date, (date) => !isNaN(new Date(date).getTime()));
   }
