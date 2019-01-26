@@ -5,6 +5,10 @@ services:
     build:
       context: .
       dockerfile: dockerfiles/web/Dockerfile
+      args:
+        DATA_CONTROLLER_IDENT: "${DATA_CONTROLLER_IDENT}"
+        DATA_CONTROLLER_CONTACT: "${DATA_CONTROLLER_CONTACT}"
+        DATA_PROCESSING_LOCATION: "${DATA_PROCESSING_LOCATION}"
     image: rkaw92/comment-cloud-web:latest
     ports:
       - 6430:3000

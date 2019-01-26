@@ -84,7 +84,7 @@ function loggerMiddleware(req, res, next) {
 }
 app.use(require('body-parser').json());
 app.use(router);
-app.use('/ui', express.static(path.join(__dirname, '../../assets/')));
+app.use('/', express.static(path.join(__dirname, '../../assets/')));
 app.use(loggerMiddleware);
 
 // ### Listening ###

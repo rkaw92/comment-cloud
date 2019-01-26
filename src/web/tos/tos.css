@@ -1,0 +1,25 @@
+.tos-base header {
+  padding: 1em;
+  text-align: center;
+}
+.tos-base main {
+  margin: 3em;
+  border: 1px solid black;
+  padding: 1em;
+  background-color: #FAFAFA;
+}
+
+.tos-base section {
+  margin-bottom: 2em;
+  padding-bottom: 1em;
+  border-bottom: 1px solid #CCC;
+}
+
+.tos-base section:last-child {
+  border-bottom: none;
+}
+
+.tos-base pre {
+  padding-left: 0.5em;
+  background-color: #CCC;
+}

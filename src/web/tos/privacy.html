@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Privacy policy</title>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/base-min.css">
+    <link rel="stylesheet" href="tos.css">
+  </head>
+  <body class="tos-base privacy">
+    <header>
+      <h1>
+        Privacy policy
+      </h1>
+    </header>
+    <main>
+      <section>
+        <h2>Introduction</h2>
+        <p>This comment-posting service is provided using open-source software
+          <a href="<%= htmlWebpackPlugin.options.PROJECT_HOMEPAGE %>">comment-cloud</a>.
+          The author of the software firmly believes that the ability to inspect
+          the source code is important for transparency.</p>
+      </section>
+      <section>
+        <h2>Data processing</h2>
+        <p>By using this service, you may transmit information to us -
+          the operators of the comment service - that is considered personal
+          data. Therefore, it is important that you know what exactly happens
+          to this data, and what your rights are.</p>
+
+        <h3>Who are we?</h3>
+        <p>The subject who gathers your personal data is:</p>
+        <pre><%= htmlWebpackPlugin.options.DATA_CONTROLLER_IDENT %></pre>
+        <p>Contact information:</p>
+        <pre><%= htmlWebpackPlugin.options.DATA_CONTROLLER_CONTACT %></pre>
+
+        <h3>What information do we collect?</h3>
+        <p>When you post a comment, the following data is provided by you:
+          <ul>
+            <li>a name, which might be your real name or a pseudonym</li>
+            <li>your e-mail address</li>
+          </ul>
+          Additionally, we log data that is not personal on its own, but could be associated with you by parties with appropriate knowledge (e.g. your Internet Service Provider):
+          <ul>
+            <li>the IP address of your computer or router</li>
+          </ul>
+        </p>
+        <p>This information is saved in a database along with the comment.</p>
+
+        <h3>How do we use personal information?</h3>
+        <p>We use the provided name/nickname to:
+          <ul>
+            <li>display the name next to your comments on the website that uses this comment-posting service</li>
+          </ul>
+        </p>
+        <p>We use your e-mail address to:
+          <ul>
+            <li>send you a verification link upon posting a comment</li>
+            <li>send you updates about new comments/replies under the same subject (only if requested)</li>
+            <li>prevent abuse of the service by applying usage limits</li>
+          </ul>
+        </p>
+        <p>We also use additional data (IP address) to prevent abuse.</p>
+
+        <h3>What legal basis do we have for processing your personal data?</h3>
+        <p>We need to process the above data because it is necessary to make the
+          service avaiable to you: to send a verification link and updates,
+          we need an e-mail address. Similarly, to display comments, we need
+          to label them with the author's name to distinguish from other
+          commenters.</p>
+        <!-- TODO: Add a section on updates opt-in when mail non-storage is implemented. -->
+
+        <h3>Is my data shared with any third parties?</h3>
+        <p>Apart from the publicly-displayed name that you provided, <strong>we do not share your data</strong>, because that would impact your privacy.</p>
+        <p>The text of your comments and the provided author name may be shared with the administrator of the site on which you posted the comments for moderation purposes.</p>
+
+        <h3>Where do we store and process personal data?</h3>
+        <p>Your data is stored and processed <%= htmlWebpackPlugin.options.DATA_PROCESSING_LOCATION %>.</p>
+
+        <!-- TODO: Add a section about how we secure data. -->
+
+        <h3>How long is personal data stored for?</h3>
+        <p>Your personal data is stored as long as the service runs, or until we are asked to remove it. This is because the comments should be available indefinitely, and new comments / replies may arrive at any time.</p>
+
+        <h3>Your rights in relation to personal data</h3>
+        <p>At any time, you may:
+          <ul>
+            <li>access your personal information</li>
+            <li>request that your personal information stored with us be corrected or removed ("The right to be forgotten")</li>
+            <li>request that processing be limited in scope or file a complaint against this processing</li>
+            <li>revoke any consent that was given by you regarding the processing of your data</li>
+          </ul>
+        </p>
+        <p>In order to carry out any of the above, please use the listed contact information.</p>
+        <!-- TODO: Add means for the user to revoke consent / request removal via the API and a suitable GUI. -->
+        <p>You may also file a complaint with a regulatory body regarding data processing or storage.</p>
+      </section>
+      <section>
+        <h2>Tracking, cookies and similar technologies</h2>
+        <p>This service is designed to do one thing only: provide a commenting feature for its users. Therefore, it <strong>does not</strong>:
+          <ul>
+            <li>track users for advertising, or any other, purposes</li>
+            <li>set any cookies or similar data-persisting objects</li>
+            <li>profile user behavior</li>
+          </ul>
+        </p>
+        <p>The service may be improved in the future by adding usability cookies that help avoid repeated data entry. This will be clearly communicated to the user.</p>
+      </section>
+    </main>
+  </body>
+</html>

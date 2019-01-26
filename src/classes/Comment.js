@@ -24,15 +24,20 @@ class Comment extends Entity {
     }
     this.subject = subject;
     this.origin = (new URL(subject)).origin;
-    this.author = new Author(author);
-    if (!this.author.isVerifiable()) {
-      throw new Error('Author not verifiable - at least an e-mail address must be provided');
-    }
+    // TODO: Implement e-mail storage consent to enable notifications about replies.
+    const hasEmailConsent = false;
+    // Only store the e-mail address if so requested:
+    this.author = new Author({
+      name: author.name,
+      email: hasEmailConsent ? author.email : null
+    });
     this.message = message;
     this.date = new Date(date);
     this.posted = true;
     this.validated = false;
     this.validationDate = null;
+    // TODO: Implement storage of Consent objects, so that user consent can be
+    //  documented and revoked in the domain.
   }
 
   validate(date) {

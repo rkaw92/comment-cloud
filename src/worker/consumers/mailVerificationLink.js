@@ -12,7 +12,7 @@ module.exports = function mailVerificationLink(deps, channel) {
       const task = JSON.parse(message.content.toString('utf-8'));
       await deps.commentTokenMailer.sendToken(task.comment, task.token);
       // TODO: Move this log message into the mailer class itself.
-      deps.logger.info({ event: 'consumers/mailVerificationLink#sent', to: task.comment.author.email }, 'verification mail sent');
+      deps.logger.info({ event: 'consumers/mailVerificationLink#sent' }, 'verification mail sent');
       ack();
     } catch (error) {
       console.log(error);
