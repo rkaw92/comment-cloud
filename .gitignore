@@ -1,3 +1,5 @@
 node_modules
 .env.sh
 /assets
+/docker-compose.override.yaml
+/deployment

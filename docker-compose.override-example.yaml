@@ -1,0 +1,25 @@
+version: '3.2'
+
+services:
+  mongodb:
+    volumes:
+      - type: bind
+        source: /mnt/applications/comment-cloud/mongodb
+        target: /data/db
+        bind:
+          propagation: slave
+        consistency: consistent
+  rabbitmq:
+    image: rabbitmq:3-management
+    # NOTE: Ports are not exposed. The management runs on TCP port 15672.
+    # To expose the management port, see https://docs.docker.com/compose/extends/#example-use-case
+    hostname: comment-cloud-rabbitmq
+    volumes:
+      - type: bind
+        source: /mnt/applications/comment-cloud/rabbitmq
+        target: /var/lib/rabbitmq
+        bind:
+          propagation: slave
+        consistency: consistent
+
+volumes:
